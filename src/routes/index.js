@@ -1,9 +1,9 @@
-import Home from "../pages/Home/Home";
+import Home from "../pages/home";
 import {Redirect} from "react-router";
 import React from "react";
-import Recommend from "../pages/Recommend";
-import Singers from "../pages/Singers";
-import Rank from "../pages/Rank";
+import Recommend from "../pages/recommend";
+import Singers from "../pages/singers";
+import Rank from "../pages/rank";
 
 export default [
   {
