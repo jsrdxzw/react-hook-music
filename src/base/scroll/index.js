@@ -1,4 +1,5 @@
 import React, {forwardRef, useState, useEffect, useRef, useImperativeHandle} from "react"
+import PropTypes from 'prop-types'
 import BScroll from "better-scroll"
 import styled from "styled-components"
 
@@ -27,17 +28,94 @@ const Scroll = forwardRef((props, ref) => {
         return () => {
             setBScroll(null)
         }
-    }, [])
+    }, [bounceBottom, bounceTop, click, direction]) // [] 表示在初始化的时候只调用一次
+    
     useEffect(() => {
         if (!bScroll || !onScroll) return
-        bScroll.on ('scroll', (scroll) => {
-            onScroll (scroll)
+        bScroll.on('scroll', (scroll) => {
+            onScroll(scroll)
         })
         return () => {
-            bScroll.off ('scroll')
+            bScroll.off('scroll')
         }
-
-    })
+    }, [onScroll, bScroll])
+    
+    useEffect(() => {
+        if (!bScroll || !pullUp) return
+        bScroll.on('scrollEnd', () => {
+            // 判断是否滑到了底部
+            if (bScroll.y <= bScroll.maxScrollY + 100) {
+                pullUp()
+            }
+        })
+        return () => {
+            bScroll.off('scrollEnd')
+        }
+    }, [pullUp, bScroll])
+    
+    useEffect(() => {
+        if (!bScroll || !pullDown) return;
+        bScroll.on('touchEnd', (pos) => {
+            // 判断用户的下拉动作
+            if (pos.y > 50) {
+                pullDown()
+            }
+        });
+        return () => {
+            bScroll.off('touchEnd')
+        }
+    }, [pullDown, bScroll])
+    
+    useEffect(() => {
+        if (refresh && bScroll) {
+            bScroll.refresh()
+        }
+    }, [refresh, bScroll])
+    
+    useImperativeHandle(ref, () => ({
+        refresh() {
+            if (bScroll) {
+                bScroll.refresh()
+                bScroll.scrollTo(0, 0)
+            }
+        },
+        getBScroll() {
+            if (bScroll) {
+                return bScroll
+            }
+        }
+    }))
+    
+    return (
+        <ScrollContainer ref={scrollContainerRef}>
+            {props.children}
+        </ScrollContainer>
+    )
 })
+
+Scroll.defaultProps = {
+    direction: "vertical",
+    click: true,
+    refresh: true,
+    onScroll: null,
+    pullUpLoading: false,
+    pullDownLoading: false,
+    pullUp: null,
+    pullDown: null,
+    bounceTop: true,
+    bounceBottom: true
+}
+
+Scroll.propTypes = {
+    direction: PropTypes.oneOf(['vertical', 'horizontal']),
+    refresh: PropTypes.bool,
+    onScroll: PropTypes.func,
+    pullUp: PropTypes.func,
+    pullDown: PropTypes.func,
+    pullUpLoading: PropTypes.bool,
+    pullDownLoading: PropTypes.bool,
+    bounceTop: PropTypes.bool,// 是否支持向上吸顶
+    bounceBottom: PropTypes.bool// 是否支持向上吸顶
+}
 
 export default React.memo(Scroll)
