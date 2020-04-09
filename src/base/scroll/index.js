@@ -28,7 +28,7 @@ const Scroll = forwardRef((props, ref) => {
         return () => {
             setBScroll(null)
         }
-    }, [bounceBottom, bounceTop, click, direction]) // [] 表示在初始化的时候只调用一次
+    }, []) // [] 表示在初始化的时候只调用一次
     
     useEffect(() => {
         if (!bScroll || !onScroll) return

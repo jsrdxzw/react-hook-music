@@ -2,12 +2,15 @@
   "name": "cloud-music",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8000",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "axios": "^0.19.2",
     "better-scroll": "^1.15.2",
     "immutable": "^4.0.0-rc.12",
+    "prop-types": "latest",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
@@ -19,8 +22,7 @@
     "redux-immutable": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.0.1",
-    "swiper": "^5.3.6",
-    "prop-types": "latest"
+    "swiper": "^5.3.6"
   },
   "scripts": {
     "start": "react-scripts start",
